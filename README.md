@@ -1,6 +1,6 @@
 # Shorts Studio
 
-macOS desktop app for assembling YouTube Shorts from raw audio recordings.
+macOS desktop app for assembling social media shorts (1080x1920px format) from raw audio recordings.
 
 ## The idea
 
