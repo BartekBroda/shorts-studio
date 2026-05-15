@@ -1,0 +1,14 @@
+#!/bin/bash
+# Shorts Studio launcher.
+# Prefers the installed .app; falls back to uv run in the repo.
+set -euo pipefail
+
+if [ -d "/Applications/Shorts Studio.app" ]; then
+    exec open -a "/Applications/Shorts Studio.app" --args "$@"
+elif [ -d "$HOME/Applications/Shorts Studio.app" ]; then
+    exec open -a "$HOME/Applications/Shorts Studio.app" --args "$@"
+else
+    REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+    cd "$REPO"
+    exec uv run python main.py "$@"
+fi

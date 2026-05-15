@@ -1,0 +1,46 @@
+#!/bin/bash
+# Dev launcher: starts Vite, waits for it, then runs PyWebView in --dev mode.
+# Ctrl+C kills both processes cleanly.
+set -eo pipefail
+
+REPO="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+VITE_PORT=5173
+VITE_PID=""
+APP_PID=""
+
+# Kill both child processes on exit.
+_cleanup() {
+    [ -n "$VITE_PID" ] && kill "$VITE_PID" 2>/dev/null || true
+    [ -n "$APP_PID"  ] && kill "$APP_PID"  2>/dev/null || true
+}
+trap _cleanup EXIT INT TERM
+
+# Clear any stale process on the Vite port.
+lsof -ti:$VITE_PORT | xargs kill -9 2>/dev/null || true
+
+# Start Vite in background (run vite binary directly to avoid bun's exit-code noise).
+cd "$REPO/frontend"
+"$REPO/frontend/node_modules/.bin/vite" &
+VITE_PID=$!
+
+# Wait until Vite is accepting connections (up to 15 s).
+echo "Waiting for Vite on port $VITE_PORT..."
+for i in $(seq 1 30); do
+    if curl -s --max-time 0.4 "http://localhost:$VITE_PORT" >/dev/null 2>&1; then
+        break
+    fi
+    sleep 0.5
+done
+
+if ! curl -s --max-time 0.4 "http://localhost:$VITE_PORT" >/dev/null 2>&1; then
+    echo "Vite did not start in time." >&2
+    exit 1
+fi
+
+echo "Vite ready. Starting app..."
+cd "$REPO"
+uv run python main.py --dev &
+APP_PID=$!
+
+# Wait for the app process to exit (user closes the window).
+wait "$APP_PID" || true

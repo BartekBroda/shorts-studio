@@ -1,0 +1,38 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+.eggs/
+
+# UV / virtualenv
+.venv/
+uv.lock
+
+# Frontend build output
+www/
+frontend/node_modules/
+frontend/.vite/
+
+# macOS
+.DS_Store
+
+# PyInstaller
+*.spec
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Episode / project folders (not part of source)
+Spacer */
+*/metadata.json
+
+# Dev tooling
+.claude/
+docs/superpowers/
