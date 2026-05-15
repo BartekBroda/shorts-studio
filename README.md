@@ -1,10 +1,23 @@
 # Shorts Studio
 
-macOS desktop app for assembling YouTube Shorts. Pairs WAV audio clips with background videos, transcribes speech, lets you edit subtitle groupings, then renders final MP4s with subtitles and an audiogram overlay.
+macOS desktop app for assembling YouTube Shorts from raw audio recordings.
+
+## The idea
+
+Recording a podcast or voiceover gives you a WAV file. Turning that into a polished YouTube Short — subtitles, audiogram, background video, logo — normally means juggling ffmpeg commands, a transcription tool, a subtitle editor, and a video editor. Each step is manual and error-prone.
+
+Shorts Studio collapses the whole pipeline into one app:
+
+1. Drop your WAV clips into a project folder
+2. The app pairs them with background videos from your library, transcribes speech locally (no cloud, no cost), and generates a frequency-spectrum audiogram
+3. You review and edit the transcript in a word-chip editor — fix mistranscribed words, group words into subtitle lines by dragging
+4. Hit Render — the app composites everything into a 1080×1920 MP4: background video, ProRes 4444 subtitle overlay, audiogram, logo
+
+Everything runs locally. Transcription uses [whisper.cpp](https://github.com/ggerganov/whisper.cpp) on-device. No API keys, no subscriptions, no uploading footage.
 
 ## What it does
 
-1. **Setup** — open a project folder (WAV clips + logo PNG); configure subtitle style and position
+1. **Setup** — open a project folder (WAV clips + logo PNG); configure subtitle style, font size, highlight color, and vertical position via a draggable frame preview
 2. **Match & Process** — pair WAV clips to background videos; auto-transcribe via whisper-cli; generate FFT audiogram
 3. **Edit transcripts** — word-chip editor with drag & drop grouping, timestamp editing, playback, undo/redo (Cmd+Z / Shift+Cmd+Z)
 4. **Render** — compose final 1080×1920 MP4s with subtitles (ProRes 4444 overlay), audiogram, logo
@@ -98,4 +111,4 @@ frontend/src/
 
 ## License
 
-© 2026 Bartek Jagniątkowski
+MIT — © 2026 Bartek Jagniątkowski
